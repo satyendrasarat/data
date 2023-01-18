@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <script>
+      function refreshData() {
+        fetch("https://groww.in/v1/api/option_chain_service/v1/option_chain/nifty?expiry=2023-01-19")
+          .then(response => response.json())
+          .then(data => {
+            let table = document.getElementById("data");
+            table.innerHTML = "";
+            let headers = Object.keys(data[0]);
+            let headerRow = table.insertRow();
+            headers.forEach(header => {
+              let cell = headerRow.insertCell();
+              cell.innerHTML = header;
+            });
+            data.forEach(item => {
+              let row = table.insertRow();
+              headers.forEach(header => {
+                let cell = row.insertCell();
+                cell.innerHTML = item[header];
+              });
+            });
+          });
+      }
+      setInterval(refreshData, 60000); // Refresh data every minute
+    </script>
+  </head>
+  <body onload="refreshData()">
+    <table id="data"></table>
+  </body>
+</html>
